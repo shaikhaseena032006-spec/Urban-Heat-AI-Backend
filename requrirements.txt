@@ -1,6 +1,10 @@
 fastapi
 uvicorn
-pandas
+requests
 numpy
+pandas
 scikit-learn
 joblib
+rasterio
+python-dotenv
+pillow
