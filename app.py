@@ -284,10 +284,15 @@ def home():
  
 @app.post("/predict")
 def predict(data: HeatInput):
- 
+
     if model is None:
-        raise HTTPException(status_code=503, detail="Model not loaded")
- 
+        return {
+            "predicted_temperature": 45.2,
+            "risk_level": "High",
+            "recommendation": "Urban Greening",
+            "note": "Demo Mode"
+        }
+
     features = np.array([
         [
             data.ndvi,
@@ -297,9 +302,9 @@ def predict(data: HeatInput):
             data.lon
         ]
     ])
- 
+
     prediction = float(model.predict(features)[0])
- 
+
     if prediction < 32:
         risk = "Low"
     elif prediction < 38:
@@ -308,23 +313,27 @@ def predict(data: HeatInput):
         risk = "High"
     else:
         risk = "Critical"
- 
+
     return {
         "predicted_temperature": round(prediction, 2),
         "risk_level": risk
-    }
- 
- 
+    } 
 # ======================
 # Simulation API
 # ======================
  
 @app.post("/simulate")
 def simulate(data: SimulationInput):
- 
+
     if model is None:
-        raise HTTPException(status_code=503, detail="Model not loaded")
- 
+        return {
+            "current_temp": 45.2,
+            "future_temp": 42.5,
+            "cooling_effect": 2.7,
+            "intervention": data.intervention,
+            "note": "Demo Mode"
+        }
+
     current_features = np.array([
         [
             data.ndvi,
